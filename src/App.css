@@ -1,0 +1,49 @@
+body {
+    font-family: "sans-serif";
+    background-color: #8AEF;
+}
+
+.auto {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.game {
+    max-width: calc(var(--board-size) * 100px);
+    padding: 20px;
+    text-align: center;
+}
+
+.status {
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    color: #fff;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(var(--board-size), 1fr);
+    justify-content: center;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    font-size: 2rem;
+    border: 2px solid #bbb;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.cell:hover {
+    background-color: #fff;
+}
+
+.reset-game{
+    font-size: 1rem;
+}
