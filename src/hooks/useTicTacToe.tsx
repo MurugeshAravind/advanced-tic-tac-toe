@@ -31,7 +31,6 @@ const useTicTacToe = (boardSize: number) => {
 
     const calculateWinner = (currentBoard: Array<string | null>) => {
         for (let i=0; i < WINNING_PATTERNS.length; i++) {
-            // const [a, b, c] = WINNING_PATTERNS[i];
             const pattern = WINNING_PATTERNS[i];
             let countX = 0;
             let countO = 0;
@@ -50,7 +49,6 @@ const useTicTacToe = (boardSize: number) => {
     };
 
     const handleClick = (index: number) => {
-        console.log(index);
         // check winner
         const winner = calculateWinner(board);
         if (winner || board[index]) return
@@ -72,7 +70,7 @@ const useTicTacToe = (boardSize: number) => {
         setisXNext(true);
     }
 
-    return { board, calculateWinner, handleClick, getStatusMessage, resetGame};
+    return { board, handleClick, getStatusMessage, resetGame};
 };
 
 export default useTicTacToe;

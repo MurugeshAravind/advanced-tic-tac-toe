@@ -1,7 +1,7 @@
 import useTicTacToe from "../hooks/useTicTacToe";
 import type { CSSProperties } from "react";
 
-const TicTacToe = ({boardSize = 3}) => {
+const TicTacToe = ({ boardSize }: { boardSize: number }) => {
     const { board, resetGame, getStatusMessage, handleClick } = useTicTacToe(boardSize);
   return (
     <div className="game auto" style={{'--board-size': boardSize} as CSSProperties}>
