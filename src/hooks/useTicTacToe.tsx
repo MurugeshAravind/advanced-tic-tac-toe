@@ -1,76 +1,82 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-const initialBoard = (size: number) => Array(size * size).fill(null);
+// --- Pure Game Logic Utilities ---
 
-const useTicTacToe = (boardSize: number) => {
-    const [board, setBoard] = useState(initialBoard(boardSize));
-    const [isXNext, setisXNext] = useState(true);
+const initialBoard = (size: number): (string | null)[] => Array(size * size).fill(null);
 
-    const generateWinningPatterns = () => {
-        const patterns = [];
-        for (let i = 0; i < boardSize; i++) {
-            const horizontalPattern = [];
-            const verticalPattern = [];
-            for (let j = 0; j < boardSize; j++) {
-                horizontalPattern.push(i * boardSize + j);
-                verticalPattern.push(j * boardSize + i);
-            }
-            patterns.push(horizontalPattern, verticalPattern);
+const generateWinningPatterns = (boardSize: number): number[][] => {
+    const patterns = [];
+
+    // Rows
+    for (let i = 0; i < boardSize; i++) {
+        const row = [];
+        for (let j = 0; j < boardSize; j++) {
+            row.push(i * boardSize + j);
         }
-        const diagonal1 = [];
-        const diagonal2 = [];
-        for (let i=0; i < boardSize; i++) {
-            diagonal1.push(i * (boardSize + 1));
-            diagonal2.push((i + 1) * (boardSize - 1));
-        }
-        patterns.push(diagonal1, diagonal2);
-        return patterns; 
+        patterns.push(row);
     }
 
-    const WINNING_PATTERNS = generateWinningPatterns();
-
-    const calculateWinner = (currentBoard: Array<string | null>) => {
-        for (let i=0; i < WINNING_PATTERNS.length; i++) {
-            const pattern = WINNING_PATTERNS[i];
-            let countX = 0;
-            let countO = 0;
-            for (let j = 0; j < pattern.length; j++) {
-                const cell = currentBoard[pattern[j]];
-                if (cell === "X") {
-                    countX++; 
-                } else if (cell === "O") {
-                    countO++;
-                }
-            }
-            if (countX === boardSize) return "X";
-            if (countO === boardSize) return "O";
+    // Columns
+    for (let i = 0; i < boardSize; i++) {
+        const col = [];
+        for (let j = 0; j < boardSize; j++) {
+            col.push(j * boardSize + i);
         }
-        return null;
-    };
+        patterns.push(col);
+    }
+
+    // Diagonals
+    const diagonal1 = [];
+    const diagonal2 = [];
+    for (let i = 0; i < boardSize; i++) {
+        diagonal1.push(i * (boardSize + 1));
+        diagonal2.push((i + 1) * (boardSize - 1));
+    }
+    patterns.push(diagonal1, diagonal2);
+
+    return patterns;
+};
+
+const calculateWinner = (board: (string | null)[], winningPatterns: number[][]): string | null => {
+    for (const pattern of winningPatterns) {
+        const firstCellPlayer = board[pattern[0]];
+        if (firstCellPlayer && pattern.every(index => board[index] === firstCellPlayer)) {
+            return firstCellPlayer;
+        }
+    }
+    return null;
+};
+
+
+// --- React Hook ---
+
+const useTicTacToe = (boardSize: number) => {
+    const [board, setBoard] = useState(() => initialBoard(boardSize));
+    const [isXNext, setIsXNext] = useState(true);
+
+    const winningPatterns = useMemo(() => generateWinningPatterns(boardSize), [boardSize]);
+    const winner = useMemo(() => calculateWinner(board, winningPatterns), [board, winningPatterns]);
 
     const handleClick = (index: number) => {
-        // check winner
-        const winner = calculateWinner(board);
         if (winner || board[index]) return
         const newBoard = [...board];
         newBoard[index] = isXNext ? "X" : "O";
         setBoard(newBoard);
-        setisXNext(!isXNext);
+        setIsXNext(!isXNext);
     }
 
     const getStatusMessage = () => {
-        const winner = calculateWinner(board);
         if (winner) return `Player ${winner} wins!`;
-        if (!board.includes(null)) return `It is a draw!`;
-        return `Player ${isXNext ? "X" : "O"} Turn`;
+        if (!board.includes(null)) return `It's a draw!`;
+        return `Player ${isXNext ? "X" : "O"}'s Turn`;
     }
 
     const resetGame = () => {
         setBoard(initialBoard(boardSize));
-        setisXNext(true);
+        setIsXNext(true);
     }
 
-    return { board, handleClick, getStatusMessage, resetGame};
+    return { board, handleClick, getStatusMessage, resetGame, winner };
 };
 
 export default useTicTacToe;
