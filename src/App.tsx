@@ -1,19 +1,16 @@
-import TicTacToe from './components/TicTacToe';
-import './App.css';
 import { useState } from 'react';
+import { TicTacToe, GridSelector, MIN_GRID_SIZE } from '@/features/game';
+import './App.css';
 
-function App() {;
-  const [boardSize, setBoardSize] = useState(3);
+function App() {
+    const [boardSize, setBoardSize] = useState(MIN_GRID_SIZE);
 
-  return (
-    <>
-   <div className="input">
-    <label htmlFor="ip">Grid (between 3 to 5):</label>
-    <input id="ip" placeholder='Number of grids needed' type="range" value={boardSize} min={3} max={5} onChange={(e) => setBoardSize(Number(e.target.value))} />
-   </div>
-    <TicTacToe boardSize={boardSize} key={boardSize} />
-    </>
-  )
+    return (
+        <>
+            <GridSelector gridSize={boardSize} onChange={setBoardSize} />
+            <TicTacToe boardSize={boardSize} key={boardSize} />
+        </>
+    );
 }
 
-export default App
+export default App;
