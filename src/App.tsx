@@ -1,4 +1,4 @@
-import TicTacToe from './components/TicTacToe';
+import { TicTacToe } from './features/tic-tac-toe';
 import './App.css';
 import { useState } from 'react';
 
