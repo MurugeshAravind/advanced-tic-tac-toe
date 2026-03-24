@@ -1,7 +1,8 @@
 import { memo } from 'react';
+import type { Cell as CellValue } from '@/features/game/utils/game-utils';
 
 interface CellProps {
-    value: string | null;
+    value: CellValue;
     index: number;
     gridSize: number;
     isWinning: boolean;
@@ -19,6 +20,7 @@ const Cell = memo(({ value, index, gridSize, isWinning, onCellClick, disabled }:
             onClick={() => onCellClick(index)}
             disabled={disabled}
             aria-label={`Row ${row + 1}, column ${col + 1}: ${value ?? 'empty'}`}
+            data-testid={`cell-${index}`}
         >
             {value}
         </button>

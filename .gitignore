@@ -30,3 +30,7 @@ claude.md
 
 # Also ignore variations
 claude*.md
+
+# Playwright
+test-results/
+playwright-report/

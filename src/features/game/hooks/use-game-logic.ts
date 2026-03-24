@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
-import { createEmptyBoard, getWinningLines, checkWinner, checkDraw } from '@/features/game/utils/game-utils';
+import { type Player, type Cell, createEmptyBoard, getWinningLines, checkWinner, checkDraw, getNextPlayer } from '@/features/game/utils/game-utils';
 
 const useGameLogic = (gridSize: number) => {
-    const [board, setBoard] = useState(() => createEmptyBoard(gridSize));
-    const [currentPlayer, setCurrentPlayer] = useState<'X' | 'O'>('X');
+    const [board, setBoard] = useState<Cell[]>(() => createEmptyBoard(gridSize));
+    const [currentPlayer, setCurrentPlayer] = useState<Player>('X');
 
     const winningLines = useMemo(() => getWinningLines(gridSize), [gridSize]);
     const result = useMemo(() => checkWinner(board, winningLines), [board, winningLines]);
@@ -20,7 +20,7 @@ const useGameLogic = (gridSize: number) => {
             next[index] = currentPlayer;
             return next;
         });
-        setCurrentPlayer(p => p === 'X' ? 'O' : 'X');
+        setCurrentPlayer(p => getNextPlayer(p));
     }, [isGameOver, board, currentPlayer]);
 
     const resetGame = useCallback(() => {

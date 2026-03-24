@@ -1,7 +1,9 @@
+import type { Player } from '@/features/game/utils/game-utils';
+
 interface GameStatusProps {
-    winner: string | null;
+    winner: Player | null;
     isDraw: boolean;
-    currentPlayer: string;
+    currentPlayer: Player;
     onReset: () => void;
 }
 

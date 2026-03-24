@@ -1,7 +1,12 @@
+export type Player = 'X' | 'O';
+export type Cell = Player | null;
+
 export const MIN_GRID_SIZE = 3;
 export const MAX_GRID_SIZE = 6;
 
-export const createEmptyBoard = (size: number): (string | null)[] =>
+export const getNextPlayer = (player: Player): Player => (player === 'X' ? 'O' : 'X');
+
+export const createEmptyBoard = (size: number): Cell[] =>
     Array(size * size).fill(null);
 
 export const getWinningLines = (size: number): number[][] => {
@@ -16,9 +21,9 @@ export const getWinningLines = (size: number): number[][] => {
 };
 
 export const checkWinner = (
-    board: (string | null)[],
+    board: Cell[],
     lines: number[][]
-): { winner: string; winningLine: number[] } | null => {
+): { winner: Player; winningLine: number[] } | null => {
     for (const line of lines) {
         const val = board[line[0]];
         if (val && line.every(i => board[i] === val))
@@ -27,5 +32,5 @@ export const checkWinner = (
     return null;
 };
 
-export const checkDraw = (board: (string | null)[]): boolean =>
+export const checkDraw = (board: Cell[]): boolean =>
     board.every(cell => cell !== null);

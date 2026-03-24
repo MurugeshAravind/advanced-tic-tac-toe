@@ -1,8 +1,9 @@
 import { memo } from 'react';
 import Cell from '@/features/game/components/cell';
+import type { Cell as CellValue } from '@/features/game/utils/game-utils';
 
 interface BoardProps {
-    board: (string | null)[];
+    board: CellValue[];
     gridSize: number;
     winningCells: Set<number>;
     isGameOver: boolean;
