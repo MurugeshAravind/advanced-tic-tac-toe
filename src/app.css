@@ -1,0 +1,62 @@
+body {
+    font-family: "sans-serif";
+    background-color: #F3EAD2;
+}
+
+.auto {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.grid-selector {
+    position: absolute;
+    top: 5%;
+    left: 40%;
+    font-size: 1.5rem;
+    z-index: 10;
+}
+
+.game {
+    padding: 5px;
+    text-align: center;
+}
+
+.status {
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: black;
+}
+
+.board {
+    justify-content: center;
+}
+
+.cell {
+    width: 85px;
+    height: 85px;
+    font-size: 1.5rem;
+    border: 2px solid #bbb;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.cell:hover:not(:disabled) {
+    background-color: #fff;
+}
+
+.cell--winning {
+    background-color: #a8e6a3;
+    border-color: #4caf50;
+    font-weight: bold;
+}
+
+.reset-game {
+    font-size: 1.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
