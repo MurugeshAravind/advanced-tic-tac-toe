@@ -3,7 +3,7 @@ import useGameLogic from '@/features/game/hooks/use-game-logic';
 import Board from '@/features/game/components/board';
 import GameStatus from '@/features/game/components/game-status';
 
-const TicTacToe = ({ boardSize = 3 }: { boardSize?: number }) => {
+const TicTacToe = ({ boardSize }: { boardSize: number }) => {
     const { board, currentPlayer, winner, isDraw, isGameOver, winningCells, handleCellClick, resetGame } =
         useGameLogic(boardSize);
     const boardContainerStyle = useMemo(() => ({ maxWidth: `${boardSize * 100}px` }), [boardSize]);
