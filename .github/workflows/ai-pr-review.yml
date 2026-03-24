@@ -1,0 +1,110 @@
+name: AI PR Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'src/**/*.ts'
+      - 'src/**/*.tsx'
+      - 'src/**/*.css'
+
+jobs:
+  review:
+    name: AI Code Review
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get PR diff
+        id: diff
+        run: |
+          git diff origin/${{ github.base_ref }}...HEAD \
+            -- 'src/**/*.ts' 'src/**/*.tsx' 'src/**/*.css' \
+            > pr_diff.txt
+          echo "diff_size=$(wc -c < pr_diff.txt)" >> $GITHUB_OUTPUT
+
+      - name: Run AI Code Review
+        if: steps.diff.outputs.diff_size != '0'
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          DIFF_CONTENT=$(cat pr_diff.txt)
+
+          # OpenRouter uses the OpenAI-compatible API shape
+          RESPONSE=$(curl -s https://openrouter.ai/api/v1/chat/completions \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+            -H "HTTP-Referer: https://github.com/${{ github.repository }}" \
+            -H "X-Title: PR Code Review" \
+            -d "$(jq -n \
+              --arg diff "$DIFF_CONTENT" \
+              --arg pr_title "${{ github.event.pull_request.title }}" \
+              '{
+                model: "google/gemini-2.0-flash-exp:free",
+                max_tokens: 2048,
+                messages: [
+                  {
+                    role: "system",
+                    content: "You are a senior React + TypeScript code reviewer for a tic-tac-toe application. Review the provided git diff and give structured, actionable feedback.\n\nFocus on:\n1. Correctness — edge cases (draw, filled cell, post-win clicks), immutable state updates\n2. Performance — useMemo, useCallback, React.memo usage\n3. Clean Code — DRY, named constants (no magic numbers), single-responsibility functions ≤30 lines\n4. TypeScript — no any, proper union types (Player = X|O), explicit prop interfaces\n5. React Patterns — hooks in custom hooks not components, no logic in JSX\n6. Design Patterns — separation of game logic from UI\n7. Security — no dangerouslySetInnerHTML, no direct DOM mutation\n\nFormat your response as a GitHub PR comment using markdown:\n\n## 🤖 AI Code Review\n\n### ✅ Strengths\n- ...\n\n### 🔴 Critical Issues _(must fix)_\n- **Title**: explanation\n  ```ts\n  // ❌ Current\n  // ✅ Fix\n  ```\n\n### 🟡 Improvements _(should fix)_\n- ...\n\n### 🔵 Suggestions _(nice to have)_\n- ...\n\n### 📊 Score: X/10\n_one sentence verdict_\n\nIf there are no issues in a category, omit that section. Be concise — this is a PR comment, not an essay."
+                  },
+                  {
+                    role: "user",
+                    content: ("PR: " + $pr_title + "\n\nDiff:\n```diff\n" + $diff + "\n```")
+                  }
+                ]
+              }' \
+            )"
+          )
+
+          # OpenRouter uses OpenAI response shape: .choices[0].message.content
+          echo "$RESPONSE" | jq -r '.choices[0].message.content' > review_comment.txt
+
+          # Sanity check — surface raw error if something went wrong
+          if [ ! -s review_comment.txt ] || grep -q "^null$" review_comment.txt; then
+            echo "⚠️ AI Review error or empty response:" > review_comment.txt
+            echo "$RESPONSE" | jq '.' >> review_comment.txt
+          fi
+
+      - name: Post review comment
+        if: steps.diff.outputs.diff_size != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const comment = fs.readFileSync('review_comment.txt', 'utf8');
+
+            // Delete any previous review comments on this PR to keep it clean
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            for (const c of comments) {
+              if (c.body.startsWith('## 🤖 AI Code Review')) {
+                await github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: c.id,
+                });
+              }
+            }
+
+            // Post the fresh review
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: comment,
+            });
+
+      - name: No changes to review
+        if: steps.diff.outputs.diff_size == '0'
+        run: echo "No TypeScript/TSX/CSS changes found in this PR — skipping review."
