@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import type { Player } from '@/features/game/utils/game-utils';
 
 interface GameStatusProps {
@@ -7,7 +8,7 @@ interface GameStatusProps {
     onReset: () => void;
 }
 
-const GameStatus = ({ winner, isDraw, currentPlayer, onReset }: GameStatusProps) => {
+const GameStatus = memo(({ winner, isDraw, currentPlayer, onReset }: GameStatusProps) => {
     const message = winner
         ? `Player ${winner} wins!`
         : isDraw
@@ -17,9 +18,10 @@ const GameStatus = ({ winner, isDraw, currentPlayer, onReset }: GameStatusProps)
     return (
         <div className="status">
             <span role="status" aria-live="polite">{message}</span>
-            <button className="reset-game" title="Reset game" onClick={onReset}>&#x1f501;</button>
+            <button className="reset-game" title="Reset game" aria-label="Reset game" data-testid="reset-button" onClick={onReset}>&#x1f501;</button>
         </div>
     );
-};
+});
 
+GameStatus.displayName = 'GameStatus';
 export default GameStatus;

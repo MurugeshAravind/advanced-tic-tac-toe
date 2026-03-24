@@ -22,7 +22,17 @@ describe('<GameStatus />', () => {
     it('calls onReset when reset button is clicked', async () => {
         const onReset = vi.fn();
         render(<GameStatus winner={null} isDraw={false} currentPlayer="X" onReset={onReset} />);
-        await userEvent.click(screen.getByTitle('Reset game'));
+        await userEvent.click(screen.getByTestId('reset-button'));
         expect(onReset).toHaveBeenCalledOnce();
+    });
+
+    it('reset button has accessible label', () => {
+        render(<GameStatus winner={null} isDraw={false} currentPlayer="X" onReset={vi.fn()} />);
+        expect(screen.getByTestId('reset-button')).toHaveAccessibleName('Reset game');
+    });
+
+    it('status region has aria-live polite', () => {
+        render(<GameStatus winner={null} isDraw={false} currentPlayer="X" onReset={vi.fn()} />);
+        expect(screen.getByRole('status')).toHaveAttribute('aria-live', 'polite');
     });
 });
