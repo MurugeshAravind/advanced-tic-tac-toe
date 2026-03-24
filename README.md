@@ -1,73 +1,82 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Advanced Tic-Tac-Toe (React + TypeScript + Vite)
 
-Currently, two official plugins are available:
+An advanced, customizable Tic-Tac-Toe game built with React, TypeScript, and Vite.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🕹️ Features
 
-## React Compiler
+- **Dynamic grid size:** Play on boards from 3x3 up to 6x6
+- **Modern UI:** Responsive, accessible, and keyboard-friendly
+- **Instant feedback:** Highlights winning lines and shows game status
+- **Fast Refresh & HMR:** Powered by Vite and React 19
+- **Type-safe:** Built with TypeScript throughout
+- **Comprehensive tests:** Unit and E2E tests with Vitest and Playwright
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🚀 Getting Started
 
-## Expanding the ESLint configuration
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v18+ recommended)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Setup
+```bash
+git clone https://github.com/your-username/advanced-tic-tac-toe.git
+cd advanced-tic-tac-toe
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Run the App
+```bash
+npm run dev
+# Open http://localhost:5173 in your browser
 ```
+
+### Build for Production
+```bash
+npm run build
+npm run preview
+```
+
+### Run Tests
+- **Unit & Component tests:**
+  ```bash
+  npm run test
+  ```
+- **E2E tests (Playwright):**
+  ```bash
+  npm run test:e2e
+  ```
+
+## 🗂️ Folder Structure
+
+```
+src/
+  app.tsx            # Main app entry
+  features/
+    game/            # Core game logic & components
+      components/    # Board, Cell, Status, etc.
+      hooks/         # use-game-logic (main game hook)
+      utils/         # Game utilities (win logic, etc.)
+    tic-tac-toe/     # (Legacy/alt) tic-tac-toe implementation
+  public/            # Static assets
+e2e/                 # Playwright E2E tests
+```
+
+## 📝 How to Play
+
+1. Select your desired grid size (3x3 to 6x6)
+2. Take turns as X and O
+3. Win by completing a row, column, or diagonal
+4. Reset anytime with the reset button
+
+## 🧪 Linting & Code Quality
+
+- Run `npm run lint` to check code style and quality
+- ESLint is preconfigured for React, TypeScript, and best practices
+
+## 🤝 Contributing
+
+Pull requests and issues are welcome! Please open an issue to discuss major changes.
+
+---
+
+Built with ❤️ using React 19, Vite, and TypeScript.
