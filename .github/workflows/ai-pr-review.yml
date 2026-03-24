@@ -47,7 +47,7 @@ jobs:
               --arg diff "$DIFF_CONTENT" \
               --arg pr_title "${{ github.event.pull_request.title }}" \
               '{
-                model: "google/gemini-2.0-flash-exp:free",
+                model: "openrouter/free",
                 max_tokens: 2048,
                 messages: [
                   {
