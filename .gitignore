@@ -23,4 +23,14 @@ dist-ssr
 *.sln
 *.sw?
 
-GEMINI.md
+# Ignore claude.md files
+.claude/
+claude.md
+**/claude.md
+
+# Also ignore variations
+claude*.md
+
+# Playwright
+test-results/
+playwright-report/

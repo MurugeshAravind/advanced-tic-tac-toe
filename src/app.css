@@ -10,15 +10,15 @@ body {
     transform: translate(-50%, -50%);
 }
 
-.input {
+.grid-selector {
     position: absolute;
     top: 5%;
     left: 40%;
     font-size: 1.5rem;
+    z-index: 10;
 }
 
 .game {
-    max-width: calc(var(--board-size) * 100px);
     padding: 5px;
     text-align: center;
 }
@@ -27,13 +27,11 @@ body {
     font-size: 1.5rem;
     display: flex;
     justify-content: space-between;
-    margin-bottom:8px;
+    margin-bottom: 8px;
     color: black;
 }
 
 .board {
-    display: grid;
-    grid-template-columns: repeat(var(--board-size), 1fr);
     justify-content: center;
 }
 
@@ -46,11 +44,17 @@ body {
     transition: background-color 0.3s ease-in-out;
 }
 
-.cell:hover {
+.cell:hover:not(:disabled) {
     background-color: #fff;
 }
 
-.reset-game{
+.cell--winning {
+    background-color: #a8e6a3;
+    border-color: #4caf50;
+    font-weight: bold;
+}
+
+.reset-game {
     font-size: 1.5rem;
     background: transparent;
     border: none;
