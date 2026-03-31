@@ -3,15 +3,15 @@ import {
     signUp,
     signOut,
     confirmSignUp,
-    getCurrentUser,
+    fetchUserAttributes,
     resendSignUpCode,
 } from 'aws-amplify/auth';
 
 export async function login(email: string, password: string) {
     const { isSignedIn } = await signIn({ username: email, password });
     if (!isSignedIn) throw new Error('Sign in failed');
-    const user = await getCurrentUser();
-    return user.username;
+    const attrs = await fetchUserAttributes();
+    return attrs.email ?? email;
 }
 
 export async function register(email: string, password: string) {
@@ -32,8 +32,8 @@ export async function logout() {
 
 export async function getAuthenticatedUser(): Promise<string | null> {
     try {
-        const user = await getCurrentUser();
-        return user.username;
+        const attrs = await fetchUserAttributes();
+        return attrs.email ?? null;
     } catch {
         return null;
     }

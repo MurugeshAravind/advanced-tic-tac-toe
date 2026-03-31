@@ -82,19 +82,23 @@ body {
     font-size: 1.2rem;
 }
 
+.game-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2rem;
+    gap: 1.5rem;
+}
+
 .auto {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    width: 100%;
 }
 
 .grid-selector {
-    position: absolute;
-    top: 5%;
-    left: 40%;
-    font-size: 1.5rem;
-    z-index: 10;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .game {

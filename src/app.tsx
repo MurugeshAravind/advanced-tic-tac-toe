@@ -9,11 +9,10 @@ function App() {
     const [boardSize, setBoardSize] = useState(MIN_GRID_SIZE);
     const [username, setUsername] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
-    const [showHistory, setShowHistory] = useState(false);
+    const [activeView, setActiveView] = useState<'game' | 'history' | 'leaderboard'>('game');
     const [history, setHistory] = useState<GameRecord[]>([]);
     const [historyLoading, setHistoryLoading] = useState(false);
     const [historyError, setHistoryError] = useState<string | null>(null);
-    const [showLeaderboard, setShowLeaderboard] = useState(false);
     const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
     const [leaderboardLoading, setLeaderboardLoading] = useState(false);
     const [leaderboardError, setLeaderboardError] = useState<string | null>(null);
@@ -30,10 +29,10 @@ function App() {
     };
 
     const handleToggleHistory = useCallback(async () => {
-        if (!showHistory) {
+        if (activeView !== 'history') {
             setHistoryLoading(true);
             setHistoryError(null);
-            setShowLeaderboard(false);
+            setActiveView('history');
             try {
                 const games = await fetchGames();
                 setHistory(games);
@@ -42,15 +41,16 @@ function App() {
             } finally {
                 setHistoryLoading(false);
             }
+        } else {
+            setActiveView('game');
         }
-        setShowHistory(prev => !prev);
-    }, [showHistory]);
+    }, [activeView]);
 
     const handleToggleLeaderboard = useCallback(async () => {
-        if (!showLeaderboard) {
+        if (activeView !== 'leaderboard') {
             setLeaderboardLoading(true);
             setLeaderboardError(null);
-            setShowHistory(false);
+            setActiveView('leaderboard');
             try {
                 const entries = await fetchLeaderboard();
                 setLeaderboard(entries);
@@ -59,9 +59,10 @@ function App() {
             } finally {
                 setLeaderboardLoading(false);
             }
+        } else {
+            setActiveView('game');
         }
-        setShowLeaderboard(prev => !prev);
-    }, [showLeaderboard]);
+    }, [activeView]);
 
     if (loading) return <div className="app-loading">Loading...</div>;
 
@@ -72,15 +73,15 @@ function App() {
             <div className="app-header">
                 <span className="app-user">👤 {username}</span>
                 <button className="app-history" onClick={handleToggleHistory}>
-                    {showHistory ? 'Back to Game' : 'My History'}
+                    {activeView === 'history' ? 'Back to Game' : 'My History'}
                 </button>
                 <button className="app-history" onClick={handleToggleLeaderboard}>
-                    {showLeaderboard ? 'Back to Game' : 'Leaderboard'}
+                    {activeView === 'leaderboard' ? 'Back to Game' : 'Leaderboard'}
                 </button>
                 <button className="app-signout" onClick={handleSignOut}>Sign Out</button>
             </div>
 
-            {showHistory ? (
+            {activeView === 'history' ? (
                 <div className="history-container">
                     <h2>Game History</h2>
                     {historyLoading ? (
@@ -110,7 +111,7 @@ function App() {
                         </table>
                     )}
                 </div>
-            ) : showLeaderboard ? (
+            ) : activeView === 'leaderboard' ? (
                 <div className="history-container">
                     <h2>Leaderboard</h2>
                     {leaderboardLoading ? (
@@ -145,10 +146,10 @@ function App() {
                     )}
                 </div>
             ) : (
-                <>
+                <div className="game-area">
                     <GridSelector gridSize={boardSize} onChange={setBoardSize} />
                     <TicTacToe boardSize={boardSize} username={username} key={boardSize} />
-                </>
+                </div>
             )}
         </>
     );
