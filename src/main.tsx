@@ -1,10 +1,15 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './app.tsx'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Amplify } from "aws-amplify";
+import App from "./app";
+import awsExports from "./aws-exports";
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+Amplify.configure(awsExports);
+
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+
+root.render(
+  <React.StrictMode>
     <App />
-  </StrictMode>,
-)
+  </React.StrictMode>
+);

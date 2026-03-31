@@ -3,6 +3,40 @@ body {
     background-color: #F3EAD2;
 }
 
+.app-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(0,0,0,0.05);
+}
+
+.app-user {
+    font-size: 0.95rem;
+}
+
+.app-signout {
+    padding: 0.35rem 0.85rem;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.app-signout:hover {
+    background: rgba(0,0,0,0.08);
+}
+
+.app-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-size: 1.2rem;
+}
+
 .auto {
     position: absolute;
     top: 50%;
