@@ -7,7 +7,7 @@ import {
     resendSignUpCode,
 } from 'aws-amplify/auth';
 
-export async function login(email: string, password: string) {
+export async function login(email: string, password: string): Promise<string> {
     const { isSignedIn } = await signIn({ username: email, password });
     if (!isSignedIn) throw new Error('Sign in failed');
     const attrs = await fetchUserAttributes();

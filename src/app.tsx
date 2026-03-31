@@ -23,10 +23,10 @@ function App() {
             .finally(() => setLoading(false));
     }, []);
 
-    const handleSignOut = async () => {
+    const handleSignOut = useCallback(async () => {
         await logout();
         setUsername(null);
-    };
+    }, []);
 
     const handleToggleHistory = useCallback(async () => {
         if (activeView !== 'history') {

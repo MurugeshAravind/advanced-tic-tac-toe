@@ -4,7 +4,12 @@ import Board from '@/features/game/components/board';
 import GameStatus from '@/features/game/components/game-status';
 import { saveGame } from '@/services/game-history';
 
-const TicTacToe = ({ boardSize, username }: { boardSize: number; username: string }) => {
+interface TicTacToeProps {
+    boardSize: number;
+    username: string;
+}
+
+const TicTacToe = ({ boardSize, username }: TicTacToeProps) => {
     const { board, currentPlayer, winner, isDraw, isGameOver, winningCells, handleCellClick, resetGame } =
         useGameLogic(boardSize);
     const boardContainerStyle = useMemo(() => ({ maxWidth: `${boardSize * 100}px` }), [boardSize]);
