@@ -29,6 +29,51 @@ body {
     background: rgba(0,0,0,0.08);
 }
 
+.app-history {
+    padding: 0.35rem 0.85rem;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.app-history:hover {
+    background: rgba(0,0,0,0.08);
+}
+
+.history-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.history-container h2 {
+    margin-bottom: 1rem;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.history-table th,
+.history-table td {
+    padding: 0.6rem 1rem;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+.history-table th {
+    background: rgba(0,0,0,0.06);
+    font-weight: 600;
+}
+
+.history-error {
+    color: #c0392b;
+}
+
 .app-loading {
     display: flex;
     justify-content: center;
