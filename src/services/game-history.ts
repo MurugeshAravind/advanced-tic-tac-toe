@@ -16,7 +16,15 @@ export interface GameRecord {
     playedAt: string;
 }
 
-export async function saveGame(winner: string, boardSize: number): Promise<void> {
+export interface LeaderboardEntry {
+    userId: string;
+    username: string;
+    wins: number;
+    draws: number;
+    totalGames: number;
+}
+
+export async function saveGame(winner: string, boardSize: number, username: string): Promise<void> {
     const token = await getToken();
     const res = await fetch(`${API_URL}/games`, {
         method: 'POST',
@@ -24,7 +32,7 @@ export async function saveGame(winner: string, boardSize: number): Promise<void>
             'Content-Type': 'application/json',
             'Authorization': token,
         },
-        body: JSON.stringify({ winner, boardSize }),
+        body: JSON.stringify({ winner, boardSize, username }),
     });
     if (!res.ok) throw new Error(`Failed to save game: ${res.status}`);
 }
@@ -35,5 +43,11 @@ export async function fetchGames(): Promise<GameRecord[]> {
         headers: { 'Authorization': token },
     });
     if (!res.ok) throw new Error(`Failed to fetch games: ${res.status}`);
+    return res.json();
+}
+
+export async function fetchLeaderboard(): Promise<LeaderboardEntry[]> {
+    const res = await fetch(`${API_URL}/leaderboard`);
+    if (!res.ok) throw new Error(`Failed to fetch leaderboard: ${res.status}`);
     return res.json();
 }

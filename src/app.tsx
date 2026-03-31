@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { TicTacToe, GridSelector, MIN_GRID_SIZE } from '@/features/game';
 import LoginPage from '@/pages/login-page';
 import { getAuthenticatedUser, logout } from '@/services/auth';
-import { fetchGames, type GameRecord } from '@/services/game-history';
+import { fetchGames, fetchLeaderboard, type GameRecord, type LeaderboardEntry } from '@/services/game-history';
 import './app.css';
 
 function App() {
@@ -13,6 +13,10 @@ function App() {
     const [history, setHistory] = useState<GameRecord[]>([]);
     const [historyLoading, setHistoryLoading] = useState(false);
     const [historyError, setHistoryError] = useState<string | null>(null);
+    const [showLeaderboard, setShowLeaderboard] = useState(false);
+    const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+    const [leaderboardLoading, setLeaderboardLoading] = useState(false);
+    const [leaderboardError, setLeaderboardError] = useState<string | null>(null);
 
     useEffect(() => {
         getAuthenticatedUser()
@@ -29,6 +33,7 @@ function App() {
         if (!showHistory) {
             setHistoryLoading(true);
             setHistoryError(null);
+            setShowLeaderboard(false);
             try {
                 const games = await fetchGames();
                 setHistory(games);
@@ -41,6 +46,23 @@ function App() {
         setShowHistory(prev => !prev);
     }, [showHistory]);
 
+    const handleToggleLeaderboard = useCallback(async () => {
+        if (!showLeaderboard) {
+            setLeaderboardLoading(true);
+            setLeaderboardError(null);
+            setShowHistory(false);
+            try {
+                const entries = await fetchLeaderboard();
+                setLeaderboard(entries);
+            } catch {
+                setLeaderboardError('Failed to load leaderboard. Please try again.');
+            } finally {
+                setLeaderboardLoading(false);
+            }
+        }
+        setShowLeaderboard(prev => !prev);
+    }, [showLeaderboard]);
+
     if (loading) return <div className="app-loading">Loading...</div>;
 
     if (!username) return <LoginPage onSuccess={setUsername} />;
@@ -51,6 +73,9 @@ function App() {
                 <span className="app-user">👤 {username}</span>
                 <button className="app-history" onClick={handleToggleHistory}>
                     {showHistory ? 'Back to Game' : 'My History'}
+                </button>
+                <button className="app-history" onClick={handleToggleLeaderboard}>
+                    {showLeaderboard ? 'Back to Game' : 'Leaderboard'}
                 </button>
                 <button className="app-signout" onClick={handleSignOut}>Sign Out</button>
             </div>
@@ -85,10 +110,44 @@ function App() {
                         </table>
                     )}
                 </div>
+            ) : showLeaderboard ? (
+                <div className="history-container">
+                    <h2>Leaderboard</h2>
+                    {leaderboardLoading ? (
+                        <p>Loading...</p>
+                    ) : leaderboardError ? (
+                        <p className="history-error">{leaderboardError}</p>
+                    ) : leaderboard.length === 0 ? (
+                        <p>No entries yet.</p>
+                    ) : (
+                        <table className="history-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Player</th>
+                                    <th>Wins</th>
+                                    <th>Draws</th>
+                                    <th>Total Games</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {leaderboard.map((entry, i) => (
+                                    <tr key={entry.userId}>
+                                        <td>#{i + 1}</td>
+                                        <td>{entry.username}</td>
+                                        <td>{entry.wins}</td>
+                                        <td>{entry.draws}</td>
+                                        <td>{entry.totalGames}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
+                </div>
             ) : (
                 <>
                     <GridSelector gridSize={boardSize} onChange={setBoardSize} />
-                    <TicTacToe boardSize={boardSize} key={boardSize} />
+                    <TicTacToe boardSize={boardSize} username={username} key={boardSize} />
                 </>
             )}
         </>
