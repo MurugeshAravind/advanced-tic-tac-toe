@@ -147,6 +147,7 @@ function App() {
                 </div>
             ) : (
                 <div className="game-area">
+                    <h1 className="game-title">TIC TAC TOE</h1>
                     <GridSelector gridSize={boardSize} onChange={setBoardSize} />
                     <TicTacToe boardSize={boardSize} username={username} key={boardSize} />
                 </div>

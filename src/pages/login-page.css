@@ -4,21 +4,31 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    gap: 1.5rem;
+    gap: 1.25rem;
     padding: 1.5rem 1rem;
 }
 
 .login-title {
-    font-size: 2rem;
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.6rem, 5vw, 2.25rem);
+    font-weight: 900;
+    letter-spacing: 0.12em;
     margin: 0;
+    background: linear-gradient(135deg, #ffffff 0%, var(--accent-bright) 45%, var(--x-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 20px var(--accent-glow));
 }
 
 .login-tabs {
     display: flex;
     gap: 0;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
     overflow: hidden;
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
 }
 
 .login-tabs button {
@@ -26,12 +36,22 @@
     border: none;
     background: transparent;
     cursor: pointer;
-    font-size: 0.95rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
 .login-tabs button.active {
-    background: #1a73e8;
-    color: white;
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    color: #fff;
+    box-shadow: 0 0 16px var(--accent-glow);
+}
+
+.login-tabs button:not(.active):hover {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
 }
 
 .login-form {
@@ -39,49 +59,93 @@
     flex-direction: column;
     gap: 0.75rem;
     width: 100%;
-    max-width: 360px;
+    max-width: 380px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: var(--shadow-card), 0 0 60px rgba(124, 58, 237, 0.1);
 }
 
 .login-form input {
-    padding: 0.6rem 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-form input::placeholder {
+    color: var(--text-dim);
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: var(--accent-bright);
+    box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 .login-submit {
-    padding: 0.65rem;
-    background: #1a73e8;
-    color: white;
+    padding: 0.75rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    color: #fff;
     border: none;
-    border-radius: 6px;
-    font-size: 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
     cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 18px var(--accent-glow);
+}
+
+.login-submit:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 28px var(--accent-glow);
+}
+
+.login-submit:active:not(:disabled) {
+    transform: translateY(0);
 }
 
 .login-submit:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
+    transform: none;
 }
 
 .login-error {
-    color: #d93025;
-    font-size: 0.875rem;
+    color: var(--danger);
+    font-size: 0.85rem;
     margin: 0;
 }
 
 .confirm-hint {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     margin: 0;
     text-align: center;
+    color: var(--text-muted);
 }
 
 .resend-link {
     background: none;
     border: none;
-    color: #1a73e8;
+    color: var(--x-color);
     cursor: pointer;
     font-size: 0.875rem;
     text-align: left;
     padding: 0;
+    font-family: 'Inter', sans-serif;
+    transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.resend-link:hover {
+    color: #fff;
+    text-shadow: 0 0 8px var(--x-glow);
 }

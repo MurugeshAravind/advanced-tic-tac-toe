@@ -21,6 +21,7 @@ const Cell = memo(({ value, index, gridSize, isWinning, onCellClick, disabled }:
             disabled={disabled}
             aria-label={`Row ${row + 1}, column ${col + 1}: ${value ?? 'empty'}`}
             data-testid={`cell-${index}`}
+            data-value={value ?? ''}
         >
             {value}
         </button>
