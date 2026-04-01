@@ -74,6 +74,10 @@ body {
     letter-spacing: 0.06em;
     color: var(--text-muted);
     margin-right: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: clamp(100px, 28vw, 260px);
 }
 
 .app-signout,
@@ -177,6 +181,10 @@ body {
     padding: 0.65rem 1rem;
     border: 1px solid var(--border);
     text-align: left;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .history-table th {
@@ -296,6 +304,15 @@ body {
     font-weight: 600;
     letter-spacing: 0.04em;
     color: var(--text-primary);
+}
+
+/* The status span must have min-width: 0 so it can shrink inside the flex
+   container and show an ellipsis instead of pushing the reset button out */
+.status span[role="status"] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
 }
 
 /* ─── Board ─── */
