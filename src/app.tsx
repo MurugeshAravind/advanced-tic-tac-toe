@@ -27,7 +27,7 @@ function App() {
     }, []);
 
     useEffect(() => {
-        if (username) setXInput(prev => prev || username);
+        if (username) setXInput(prev => prev || username.split('@')[0]);
     }, [username]);
 
     const handleSignOut = useCallback(async () => {
@@ -92,7 +92,7 @@ function App() {
     return (
         <>
             <div className="app-header">
-                <span className="app-user">👤 {username}</span>
+                <span className="app-user" title={username}>👤 {username.split('@')[0]}</span>
                 <button className="app-history" onClick={handleToggleHistory}>
                     {activeView === 'history' ? 'Back to Game' : 'My History'}
                 </button>

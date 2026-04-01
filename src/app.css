@@ -306,13 +306,12 @@ body {
     color: var(--text-primary);
 }
 
-/* The status span must have min-width: 0 so it can shrink inside the flex
-   container and show an ellipsis instead of pushing the reset button out */
+/* min-width: 0 lets the span shrink inside the flex container.
+   overflow-wrap ensures very long names break onto a new line
+   rather than being clipped — the full name must always be readable. */
 .status span[role="status"] {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     min-width: 0;
+    overflow-wrap: break-word;
 }
 
 /* ─── Board ─── */
