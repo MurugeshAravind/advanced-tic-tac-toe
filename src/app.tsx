@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, type FormEvent } from 'react';
 import { TicTacToe, GridSelector, MIN_GRID_SIZE } from '@/features/game';
 import LoginPage from '@/pages/login-page';
 import { getAuthenticatedUser, logout } from '@/services/auth';
@@ -16,6 +16,9 @@ function App() {
     const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
     const [leaderboardLoading, setLeaderboardLoading] = useState(false);
     const [leaderboardError, setLeaderboardError] = useState<string | null>(null);
+    const [playerNames, setPlayerNames] = useState<{ X: string; O: string } | null>(null);
+    const [xInput, setXInput] = useState('');
+    const [oInput, setOInput] = useState('');
 
     useEffect(() => {
         getAuthenticatedUser()
@@ -23,9 +26,27 @@ function App() {
             .finally(() => setLoading(false));
     }, []);
 
+    useEffect(() => {
+        if (username) setXInput(prev => prev || username);
+    }, [username]);
+
     const handleSignOut = useCallback(async () => {
         await logout();
         setUsername(null);
+        setPlayerNames(null);
+        setXInput('');
+        setOInput('');
+    }, []);
+
+    const handleStartGame = useCallback((e: FormEvent) => {
+        e.preventDefault();
+        if (xInput.trim() && oInput.trim()) {
+            setPlayerNames({ X: xInput.trim(), O: oInput.trim() });
+        }
+    }, [xInput, oInput]);
+
+    const handleChangePlayers = useCallback(() => {
+        setPlayerNames(null);
     }, []);
 
     const handleToggleHistory = useCallback(async () => {
@@ -78,6 +99,9 @@ function App() {
                 <button className="app-history" onClick={handleToggleLeaderboard}>
                     {activeView === 'leaderboard' ? 'Back to Game' : 'Leaderboard'}
                 </button>
+                {activeView === 'game' && playerNames && (
+                    <button className="app-history" onClick={handleChangePlayers}>Change Players</button>
+                )}
                 <button className="app-signout" onClick={handleSignOut}>Sign Out</button>
             </div>
 
@@ -148,8 +172,49 @@ function App() {
             ) : (
                 <div className="game-area">
                     <h1 className="game-title">TIC TAC TOE</h1>
-                    <GridSelector gridSize={boardSize} onChange={setBoardSize} />
-                    <TicTacToe boardSize={boardSize} username={username} key={boardSize} />
+                    {!playerNames ? (
+                        <form className="player-setup" onSubmit={handleStartGame}>
+                            <p className="player-setup-title">Who's Playing?</p>
+                            <div className="player-setup-cards">
+                                <div className="player-setup-card player-setup-x">
+                                    <label htmlFor="player-x-name">Player X</label>
+                                    <input
+                                        id="player-x-name"
+                                        type="text"
+                                        value={xInput}
+                                        onChange={e => setXInput(e.target.value)}
+                                        placeholder="Enter name"
+                                        autoFocus
+                                        maxLength={20}
+                                    />
+                                </div>
+                                <span className="player-setup-vs">VS</span>
+                                <div className="player-setup-card player-setup-o">
+                                    <label htmlFor="player-o-name">Player O</label>
+                                    <input
+                                        id="player-o-name"
+                                        type="text"
+                                        value={oInput}
+                                        onChange={e => setOInput(e.target.value)}
+                                        placeholder="Enter name"
+                                        maxLength={20}
+                                    />
+                                </div>
+                            </div>
+                            <button
+                                type="submit"
+                                className="player-setup-start"
+                                disabled={!xInput.trim() || !oInput.trim()}
+                            >
+                                Start Game
+                            </button>
+                        </form>
+                    ) : (
+                        <>
+                            <GridSelector gridSize={boardSize} onChange={setBoardSize} />
+                            <TicTacToe boardSize={boardSize} username={username} playerNames={playerNames} key={boardSize} />
+                        </>
+                    )}
                 </div>
             )}
         </>

@@ -7,9 +7,10 @@ import { saveGame } from '@/services/game-history';
 interface TicTacToeProps {
     boardSize: number;
     username: string;
+    playerNames: { X: string; O: string };
 }
 
-const TicTacToe = ({ boardSize, username }: TicTacToeProps) => {
+const TicTacToe = ({ boardSize, username, playerNames }: TicTacToeProps) => {
     const { board, currentPlayer, winner, isDraw, isGameOver, winningCells, handleCellClick, resetGame } =
         useGameLogic(boardSize);
     const boardContainerStyle = useMemo(() => ({ width: '100%', maxWidth: `${boardSize * 100}px` }), [boardSize]);
@@ -18,17 +19,18 @@ const TicTacToe = ({ boardSize, username }: TicTacToeProps) => {
     useEffect(() => {
         if (isGameOver && !savedRef.current) {
             savedRef.current = true;
-            const result = winner ? `${winner} Won` : 'Draw';
+            const result = winner ? `${playerNames[winner]} Won` : 'Draw';
             saveGame(result, boardSize, username).catch(console.error);
         }
         if (!isGameOver) savedRef.current = false;
-    }, [isGameOver, winner, boardSize, username, saveGame]);
+    }, [isGameOver, winner, boardSize, username, playerNames]);
     return (
         <div className="game auto" style={boardContainerStyle}>
             <GameStatus
                 winner={winner}
                 isDraw={isDraw}
                 currentPlayer={currentPlayer}
+                playerNames={playerNames}
                 onReset={resetGame}
             />
             <Board

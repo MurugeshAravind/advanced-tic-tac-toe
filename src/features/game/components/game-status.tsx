@@ -5,15 +5,16 @@ interface GameStatusProps {
     winner: Player | null;
     isDraw: boolean;
     currentPlayer: Player;
+    playerNames: { X: string; O: string };
     onReset: () => void;
 }
 
-const GameStatus = memo(({ winner, isDraw, currentPlayer, onReset }: GameStatusProps) => {
+const GameStatus = memo(({ winner, isDraw, currentPlayer, playerNames, onReset }: GameStatusProps) => {
     const message = winner
-        ? `Player ${winner} wins!`
+        ? `${playerNames[winner]} wins!`
         : isDraw
         ? "It's a draw!"
-        : `Player ${currentPlayer}'s turn`;
+        : `${playerNames[currentPlayer]}'s turn`;
 
     return (
         <div className="status">
