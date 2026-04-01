@@ -12,7 +12,7 @@ interface TicTacToeProps {
 const TicTacToe = ({ boardSize, username }: TicTacToeProps) => {
     const { board, currentPlayer, winner, isDraw, isGameOver, winningCells, handleCellClick, resetGame } =
         useGameLogic(boardSize);
-    const boardContainerStyle = useMemo(() => ({ maxWidth: `${boardSize * 100}px` }), [boardSize]);
+    const boardContainerStyle = useMemo(() => ({ width: '100%', maxWidth: `${boardSize * 100}px` }), [boardSize]);
 
     const savedRef = useRef(false);
     useEffect(() => {
