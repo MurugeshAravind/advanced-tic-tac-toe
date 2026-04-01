@@ -107,7 +107,7 @@ function App() {
 
             {activeView === 'history' ? (
                 <div className="history-container">
-                    <h2>Game History</h2>
+                    <h2>Recent Games</h2>
                     {historyLoading ? (
                         <p>Loading...</p>
                     ) : historyError ? (
@@ -124,7 +124,10 @@ function App() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {history.map(g => (
+                                {[...history]
+                                    .sort((a, b) => new Date(b.playedAt).getTime() - new Date(a.playedAt).getTime())
+                                    .slice(0, 2)
+                                    .map(g => (
                                     <tr key={g.gameId}>
                                         <td>{g.winner}</td>
                                         <td>{g.boardSize}x{g.boardSize}</td>
