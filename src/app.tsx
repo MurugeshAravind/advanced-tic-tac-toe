@@ -118,7 +118,7 @@ function App() {
                         <table className="history-table">
                             <thead>
                                 <tr>
-                                    <th>Result</th>
+                                    <th>Won By</th>
                                     <th>Board Size</th>
                                     <th>Played At</th>
                                 </tr>

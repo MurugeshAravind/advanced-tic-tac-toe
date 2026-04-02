@@ -181,10 +181,16 @@ body {
     padding: 0.65rem 1rem;
     border: 1px solid var(--border);
     text-align: left;
-    max-width: 160px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+/* "Won By" column — always show the full name, never cut it off */
+.history-table td:first-child {
+    white-space: normal;
+    word-break: break-word;
+    max-width: 200px;
 }
 
 .history-table th {
@@ -513,57 +519,154 @@ body {
     cursor: not-allowed;
 }
 
-/* ─── Mobile (≤ 480px) ─── */
+/* ─── Very small screens (≤ 380px) ─── */
 
-@media (max-width: 480px) {
-    .app-header {
-        padding: 0.6rem 0.75rem;
-        gap: 0.35rem;
-    }
-
-    .app-user {
-        font-size: 0.65rem;
-        width: 100%;
-        margin-right: 0;
-    }
-
+@media (max-width: 380px) {
     .app-signout,
     .app-history {
-        padding: 0.3rem 0.6rem;
-        font-size: 0.72rem;
+        padding: 0.25rem 0.45rem;
+        font-size: 0.67rem;
     }
 
-    .game-area {
-        padding: 1.25rem 0.5rem;
-        gap: 1rem;
+    /* Stack player cards vertically so inputs aren't cramped */
+    .player-setup-cards {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
     }
 
-    .history-container {
-        margin: 1rem 0.75rem;
-        padding: 1rem 1rem;
-        border-radius: var(--radius-md);
+    .player-setup-vs {
+        text-align: center;
+        padding-bottom: 0;
+    }
+
+    .player-setup-card {
+        width: 100%;
+    }
+
+    .player-setup-start {
+        width: 100%;
     }
 
     .history-table th,
     .history-table td {
-        padding: 0.45rem 0.6rem;
-        font-size: 0.78rem;
+        padding: 0.35rem 0.45rem;
+        font-size: 0.72rem;
+    }
+}
+
+/* ─── Mobile (≤ 480px) ─── */
+
+@media (max-width: 480px) {
+    .app-header {
+        padding: 0.55rem 0.75rem;
+        gap: 0.4rem;
+    }
+
+    /* User badge fills its own row; buttons share the row below */
+    .app-user {
+        font-size: 0.65rem;
+        width: 100%;
+        order: -1;
+        margin-right: 0;
+        margin-bottom: 0.15rem;
+    }
+
+    /* Buttons stretch evenly across the full width */
+    .app-signout,
+    .app-history {
+        flex: 1;
+        text-align: center;
+        padding: 0.35rem 0.5rem;
+        font-size: 0.72rem;
+    }
+
+    .game-area {
+        padding: 1.25rem 0.75rem;
+        gap: 0.9rem;
+    }
+
+    .history-container {
+        margin: 1rem 0.75rem;
+        padding: 1rem 0.9rem;
+        border-radius: var(--radius-md);
+    }
+
+    .history-container h2 {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .history-table {
+        font-size: 0.8rem;
+        min-width: 0;
+    }
+
+    .history-table th,
+    .history-table td {
+        padding: 0.45rem 0.55rem;
+        font-size: 0.75rem;
     }
 
     .player-setup {
         padding: 1.25rem 1rem;
+        gap: 1.1rem;
+        max-width: 100%;
     }
 
     .player-setup-cards {
-        gap: 0.4rem;
+        gap: 0.45rem;
+    }
+
+    .player-setup-card input {
+        font-size: 0.85rem;
+        padding: 0.55rem 0.7rem;
+    }
+
+    .grid-selector {
+        padding: 0.45rem 1rem;
+        gap: 0.75rem;
+    }
+
+    .grid-selector input[type="range"] {
+        width: 90px;
+    }
+
+    .status {
+        padding: 0.5rem 0.75rem;
     }
 }
 
 /* ─── Tablet (481px – 768px) ─── */
 
 @media (min-width: 481px) and (max-width: 768px) {
+    .app-header {
+        padding: 0.75rem 1.25rem;
+    }
+
     .game-area {
-        padding: 1.75rem 1rem;
+        padding: 1.75rem 1.25rem;
+    }
+
+    .history-container {
+        margin: 1.75rem 1.25rem;
+        padding: 1.5rem 1.5rem;
+    }
+
+    .player-setup {
+        max-width: 420px;
+    }
+}
+
+/* ─── Medium desktop (769px – 1199px) ─── */
+
+@media (min-width: 769px) and (max-width: 1199px) {
+    .app-header {
+        padding: 0.85rem 2rem;
+    }
+
+    .history-container {
+        margin: 2rem auto;
     }
 }
 
@@ -576,5 +679,9 @@ body {
 
     .history-container {
         margin: 3rem auto;
+    }
+
+    .game-area {
+        padding: 3rem 1rem;
     }
 }
