@@ -33,13 +33,15 @@ const TicTacToe = ({ boardSize, username, playerNames }: TicTacToeProps) => {
                 playerNames={playerNames}
                 onReset={resetGame}
             />
-            <Board
-                board={board}
-                gridSize={boardSize}
-                winningCells={winningCells}
-                isGameOver={isGameOver}
-                onCellClick={handleCellClick}
-            />
+            <div className="board-wrapper">
+                <Board
+                    board={board}
+                    gridSize={boardSize}
+                    winningCells={winningCells}
+                    isGameOver={isGameOver}
+                    onCellClick={handleCellClick}
+                />
+            </div>
         </div>
     );
 };

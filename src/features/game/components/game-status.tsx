@@ -16,8 +16,10 @@ const GameStatus = memo(({ winner, isDraw, currentPlayer, playerNames, onReset }
         ? "It's a draw!"
         : `${playerNames[currentPlayer]}'s turn`;
 
+    const indicator = winner ? winner : isDraw ? 'draw' : currentPlayer;
+
     return (
-        <div className="status">
+        <div className="status" data-current={indicator}>
             <span role="status" aria-live="polite">{message}</span>
             <button className="reset-game" title="Reset game" aria-label="Reset game" data-testid="reset-button" onClick={onReset}>&#x1f501;</button>
         </div>

@@ -1,9 +1,9 @@
 /* ─── Design Tokens ─── */
 
 :root {
-    --bg-primary: #0d0d1f;
-    --bg-card: rgba(255, 255, 255, 0.04);
-    --bg-card-hover: rgba(255, 255, 255, 0.08);
+    --bg-primary: #08081a;
+    --bg-card: rgba(255, 255, 255, 0.045);
+    --bg-card-hover: rgba(255, 255, 255, 0.09);
     --border: rgba(255, 255, 255, 0.09);
     --border-strong: rgba(255, 255, 255, 0.18);
 
@@ -16,7 +16,7 @@
 
     --text-primary: #e8e8f0;
     --text-muted: rgba(232, 232, 240, 0.55);
-    --text-dim: rgba(232, 232, 240, 0.2);
+    --text-dim: rgba(232, 232, 240, 0.22);
 
     --accent: #7c3aed;
     --accent-bright: #9b59f5;
@@ -27,7 +27,7 @@
     --radius-md: 12px;
     --radius-lg: 20px;
 
-    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
 *,
@@ -36,13 +36,17 @@
     box-sizing: border-box;
 }
 
+/* ─── Body — dot grid + ambient orbs ─── */
+
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg-primary);
     background-image:
-        radial-gradient(ellipse at 15% 50%, rgba(124, 58, 237, 0.18) 0%, transparent 55%),
-        radial-gradient(ellipse at 85% 15%, rgba(0, 212, 255, 0.12) 0%, transparent 55%),
-        radial-gradient(ellipse at 60% 85%, rgba(255, 77, 141, 0.1) 0%, transparent 55%);
+        radial-gradient(ellipse at 15% 50%, rgba(124, 58, 237, 0.2) 0%, transparent 52%),
+        radial-gradient(ellipse at 85% 15%, rgba(0, 212, 255, 0.14) 0%, transparent 52%),
+        radial-gradient(ellipse at 58% 88%, rgba(255, 77, 141, 0.12) 0%, transparent 52%),
+        radial-gradient(circle, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+    background-size: auto, auto, auto, 28px 28px;
     background-attachment: fixed;
     min-height: 100vh;
     margin: 0;
@@ -58,13 +62,31 @@ body {
     flex-wrap: wrap;
     gap: 0.5rem;
     padding: 0.85rem 1.5rem;
-    background: rgba(13, 13, 31, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(8, 8, 26, 0.88);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
     z-index: 100;
+}
+
+/* Thin gradient accent line under header */
+.app-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--accent) 30%,
+        var(--x-color) 70%,
+        transparent 100%
+    );
+    opacity: 0.45;
 }
 
 .app-user {
@@ -91,14 +113,21 @@ body {
     white-space: nowrap;
     color: var(--text-primary);
     font-family: 'Inter', sans-serif;
-    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
 }
 
 .app-signout:hover,
 .app-history:hover {
     background: var(--bg-card-hover);
     border-color: var(--accent-bright);
-    box-shadow: 0 0 14px var(--accent-glow);
+    box-shadow: 0 0 18px var(--accent-glow);
+}
+
+/* Active nav state */
+.app-history.active {
+    background: rgba(124, 58, 237, 0.18);
+    border-color: var(--accent-bright);
+    color: var(--accent-bright);
 }
 
 .app-signout {
@@ -108,7 +137,7 @@ body {
 
 .app-signout:hover {
     border-color: var(--danger);
-    box-shadow: 0 0 14px rgba(255, 69, 96, 0.4);
+    box-shadow: 0 0 18px rgba(255, 69, 96, 0.4);
     color: var(--danger);
 }
 
@@ -133,12 +162,13 @@ body {
 .app-loading::after {
     content: '';
     display: inline-block;
-    width: 1.1rem;
-    height: 1.1rem;
-    border: 2px solid var(--border);
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 2px solid rgba(124, 58, 237, 0.2);
     border-top-color: var(--accent-bright);
+    border-right-color: var(--x-color);
     border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+    animation: spin 0.7s linear infinite;
 }
 
 /* ─── History / Leaderboard ─── */
@@ -154,7 +184,7 @@ body {
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--shadow-card), 0 0 60px rgba(124, 58, 237, 0.06);
 }
 
 .history-container h2 {
@@ -186,12 +216,16 @@ body {
 }
 
 .history-table th {
-    background: rgba(124, 58, 237, 0.12);
+    background: rgba(124, 58, 237, 0.14);
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.07em;
     text-transform: uppercase;
     color: var(--accent-bright);
+}
+
+.history-table tbody tr {
+    transition: background 0.15s ease;
 }
 
 .history-table tbody tr:hover td {
@@ -212,17 +246,34 @@ body {
     gap: 1.25rem;
 }
 
+/* ─── Animated title gradient ─── */
+
+@keyframes title-flow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 .game-title {
     font-family: 'Orbitron', sans-serif;
     font-size: clamp(1.4rem, 4vw, 2rem);
     font-weight: 900;
     letter-spacing: 0.12em;
     margin: 0;
-    background: linear-gradient(135deg, #ffffff 0%, var(--accent-bright) 40%, var(--x-color) 100%);
+    background: linear-gradient(
+        135deg,
+        #ffffff 0%,
+        var(--accent-bright) 25%,
+        var(--x-color) 50%,
+        var(--o-color) 75%,
+        var(--accent-bright) 100%
+    );
+    background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    filter: drop-shadow(0 0 20px var(--accent-glow));
+    animation: title-flow 6s ease infinite;
+    filter: drop-shadow(0 0 24px var(--accent-glow));
 }
 
 .auto {
@@ -240,6 +291,12 @@ body {
     border-radius: 100px;
     padding: 0.55rem 1.25rem;
     backdrop-filter: blur(10px);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.grid-selector:hover {
+    border-color: rgba(124, 58, 237, 0.35);
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.12);
 }
 
 .grid-selector label {
@@ -293,49 +350,166 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-    padding: 0.6rem 1rem;
+    padding: 0.6rem 1rem 0.6rem 1.1rem;
     background: var(--bg-card);
     border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
     border-radius: var(--radius-md);
     backdrop-filter: blur(10px);
     font-family: 'Orbitron', sans-serif;
     font-weight: 600;
     letter-spacing: 0.04em;
     color: var(--text-primary);
+    transition: border-left-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* min-width: 0 lets the span shrink inside the flex container.
-   overflow-wrap ensures very long names break onto a new line
-   rather than being clipped — the full name must always be readable. */
+/* Player-aware left stripe */
+.status[data-current="X"] {
+    border-left-color: var(--x-color);
+    box-shadow: -3px 0 18px rgba(0, 212, 255, 0.25), inset 0 0 30px rgba(0, 212, 255, 0.03);
+}
+
+.status[data-current="O"] {
+    border-left-color: var(--o-color);
+    box-shadow: -3px 0 18px rgba(255, 77, 141, 0.25), inset 0 0 30px rgba(255, 77, 141, 0.03);
+}
+
+.status[data-current="draw"] {
+    border-left-color: var(--win-color);
+    box-shadow: -3px 0 18px rgba(255, 215, 0, 0.2);
+}
+
 .status span[role="status"] {
     min-width: 0;
     overflow-wrap: break-word;
 }
 
+/* ─── Board wrapper — ambient glow + corner brackets ─── */
+
+.board-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* Top-left corner bracket */
+.board-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 22px;
+    height: 22px;
+    border-top: 2px solid var(--accent-bright);
+    border-left: 2px solid var(--accent-bright);
+    border-radius: 4px 0 0 0;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+}
+
+/* Top-right corner bracket */
+.board-wrapper::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 22px;
+    height: 22px;
+    border-top: 2px solid var(--x-color);
+    border-right: 2px solid var(--x-color);
+    border-radius: 0 4px 0 0;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+}
+
+.board-wrapper:hover::before,
+.board-wrapper:hover::after {
+    opacity: 1;
+}
+
 /* ─── Board ─── */
 
 .board {
+    /*
+     * position: relative is required so that ::before and ::after
+     * (the bottom-corner brackets) are positioned relative to this element.
+     * Both pseudo-elements use position: absolute, which removes them from
+     * grid flow entirely — they will NOT consume a grid cell slot.
+     * Do NOT add overflow: hidden to .board or any ancestor, as the brackets
+     * extend 5px outside the border box.
+     */
+    position: relative;
     width: 100%;
     justify-content: center;
-    padding: 8px;
-    gap: 4px;
-    background: rgba(0, 0, 0, 0.35);
-    border: 1px solid var(--border);
+    padding: 10px;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(124, 58, 237, 0.3);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-card), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    box-shadow:
+        var(--shadow-card),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 0 60px rgba(124, 58, 237, 0.1);
+}
+
+/* Bottom-left and bottom-right corner brackets on the board itself */
+.board::before {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: -5px;
+    width: 22px;
+    height: 22px;
+    border-bottom: 2px solid var(--o-color);
+    border-left: 2px solid var(--o-color);
+    border-radius: 0 0 0 4px;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+}
+
+.board::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    width: 22px;
+    height: 22px;
+    border-bottom: 2px solid var(--accent-bright);
+    border-right: 2px solid var(--accent-bright);
+    border-radius: 0 0 4px 0;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+}
+
+.board-wrapper:hover .board::before,
+.board-wrapper:hover .board::after {
+    opacity: 1;
 }
 
 /* ─── Cells ─── */
 
 @keyframes cell-pop {
-    0%   { transform: scale(0.4); opacity: 0; }
-    65%  { transform: scale(1.18); }
-    100% { transform: scale(1);   opacity: 1; }
+    0%   { transform: scale(0.35); opacity: 0; }
+    60%  { transform: scale(1.2); }
+    80%  { transform: scale(0.95); }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 @keyframes pulse-win {
-    0%,  100% { box-shadow: 0 0 12px var(--win-glow), inset 0 0 12px rgba(255, 215, 0, 0.08); }
-    50%        { box-shadow: 0 0 28px var(--win-glow), 0 0 55px rgba(255, 215, 0, 0.25), inset 0 0 22px rgba(255, 215, 0, 0.12); }
+    /* Only box-shadow is animated — avoids background repaint on every frame */
+    0%, 100% {
+        box-shadow: 0 0 14px var(--win-glow), inset 0 0 14px rgba(255, 215, 0, 0.1);
+    }
+    50% {
+        box-shadow: 0 0 35px var(--win-glow), 0 0 70px rgba(255, 215, 0, 0.3), inset 0 0 28px rgba(255, 215, 0, 0.15);
+    }
 }
 
 .cell {
@@ -344,40 +518,55 @@ body {
     font-size: clamp(1.1rem, 4.5vmin, 2.25rem);
     font-family: 'Orbitron', sans-serif;
     font-weight: 700;
-    border: 1px solid rgba(124, 58, 237, 0.32);
+    border: 1px solid rgba(124, 58, 237, 0.28);
     border-radius: var(--radius-sm);
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.03);
     color: var(--text-dim);
-    box-shadow: inset 0 0 18px rgba(124, 58, 237, 0.05);
-    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: inset 0 0 18px rgba(124, 58, 237, 0.04);
+    transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, transform 0.15s ease;
 }
 
 .cell:hover:not(:disabled) {
-    background: rgba(124, 58, 237, 0.12);
+    background: rgba(124, 58, 237, 0.14);
     border-color: var(--accent-bright);
-    box-shadow: 0 0 14px var(--accent-glow), inset 0 0 12px rgba(124, 58, 237, 0.12);
+    box-shadow: 0 0 20px var(--accent-glow), inset 0 0 16px rgba(124, 58, 237, 0.14);
+    transform: scale(1.03);
 }
 
 .cell[data-value="X"] {
     color: var(--x-color);
-    text-shadow: 0 0 10px var(--x-glow), 0 0 22px var(--x-glow);
-    animation: cell-pop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-shadow:
+        0 0 8px var(--x-glow),
+        0 0 20px var(--x-glow),
+        0 0 40px rgba(0, 212, 255, 0.3);
+    border-color: rgba(0, 212, 255, 0.35);
+    background: rgba(0, 212, 255, 0.04);
+    animation: cell-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .cell[data-value="O"] {
     color: var(--o-color);
-    text-shadow: 0 0 10px var(--o-glow), 0 0 22px var(--o-glow);
-    animation: cell-pop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-shadow:
+        0 0 8px var(--o-glow),
+        0 0 20px var(--o-glow),
+        0 0 40px rgba(255, 77, 141, 0.3);
+    border-color: rgba(255, 77, 141, 0.35);
+    background: rgba(255, 77, 141, 0.04);
+    animation: cell-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .cell--winning {
     background: rgba(255, 215, 0, 0.07) !important;
     border-color: var(--win-color) !important;
     color: var(--win-color) !important;
-    text-shadow: 0 0 14px var(--win-glow), 0 0 28px var(--win-glow) !important;
-    animation: pulse-win 1.6s ease-in-out infinite !important;
+    text-shadow:
+        0 0 12px var(--win-glow),
+        0 0 28px var(--win-glow),
+        0 0 55px rgba(255, 215, 0, 0.4) !important;
+    animation: pulse-win 1.5s ease-in-out infinite !important;
     font-weight: 900;
+    transform: scale(1.02);
 }
 
 /* ─── Reset button ─── */
@@ -395,7 +584,7 @@ body {
 
 .reset-game:hover {
     transform: rotate(200deg) scale(1.25);
-    filter: drop-shadow(0 0 10px var(--accent-glow));
+    filter: drop-shadow(0 0 12px var(--accent-glow));
 }
 
 /* ─── Player Setup ─── */
@@ -411,9 +600,9 @@ body {
     border-radius: var(--radius-lg);
     width: 100%;
     max-width: 460px;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: var(--shadow-card), 0 0 80px rgba(124, 58, 237, 0.08);
 }
 
 .player-setup-title {
@@ -438,6 +627,9 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s ease;
 }
 
 .player-setup-card label {
@@ -460,13 +652,23 @@ body {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.player-setup-x {
+    background: rgba(0, 212, 255, 0.04);
+    border: 1px solid rgba(0, 212, 255, 0.1);
+}
+
 .player-setup-x label { color: var(--x-color); }
 .player-setup-x input {
     border: 1px solid rgba(0, 212, 255, 0.25);
 }
 .player-setup-x input:focus {
     border-color: var(--x-color);
-    box-shadow: 0 0 10px var(--x-glow);
+    box-shadow: 0 0 14px var(--x-glow);
+}
+
+.player-setup-o {
+    background: rgba(255, 77, 141, 0.04);
+    border: 1px solid rgba(255, 77, 141, 0.1);
 }
 
 .player-setup-o label { color: var(--o-color); }
@@ -475,7 +677,7 @@ body {
 }
 .player-setup-o input:focus {
     border-color: var(--o-color);
-    box-shadow: 0 0 10px var(--o-glow);
+    box-shadow: 0 0 14px var(--o-glow);
 }
 
 .player-setup-vs {
@@ -488,9 +690,23 @@ body {
     letter-spacing: 0.08em;
 }
 
+/* ─── Start button with shimmer ─── */
+
+@keyframes btn-shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
 .player-setup-start {
-    padding: 0.65rem 2.25rem;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-bright) 100%);
+    padding: 0.7rem 2.25rem;
+    background: linear-gradient(
+        135deg,
+        var(--accent) 0%,
+        var(--accent-bright) 45%,
+        #b07ef8 55%,
+        var(--accent) 100%
+    );
+    background-size: 200% auto;
     border: none;
     border-radius: var(--radius-sm);
     color: #fff;
@@ -500,17 +716,26 @@ body {
     letter-spacing: 0.1em;
     text-transform: uppercase;
     cursor: pointer;
-    transition: opacity 0.2s ease, box-shadow 0.2s ease;
+    transition: box-shadow 0.25s ease, transform 0.2s ease;
+    box-shadow: 0 4px 24px var(--accent-glow);
 }
 
 .player-setup-start:hover:not(:disabled) {
-    box-shadow: 0 0 22px var(--accent-glow);
-    opacity: 0.9;
+    animation: btn-shimmer 1s linear infinite;
+    box-shadow: 0 0 32px var(--accent-glow), 0 0 60px rgba(124, 58, 237, 0.2);
+    transform: translateY(-1px);
+}
+
+.player-setup-start:active:not(:disabled) {
+    transform: translateY(0);
 }
 
 .player-setup-start:disabled {
     opacity: 0.3;
     cursor: not-allowed;
+    animation: none;
+    transform: none;
+    box-shadow: none;
 }
 
 /* ─── Very small screens (≤ 380px) ─── */
@@ -522,7 +747,6 @@ body {
         font-size: 0.67rem;
     }
 
-    /* Stack player cards vertically so inputs aren't cramped */
     .player-setup-cards {
         flex-direction: column;
         align-items: stretch;
@@ -541,7 +765,6 @@ body {
     .player-setup-start {
         width: 100%;
     }
-
 }
 
 /* ─── Mobile (≤ 480px) ─── */
@@ -552,7 +775,6 @@ body {
         gap: 0.4rem;
     }
 
-    /* User badge fills its own row; buttons share the row below */
     .app-user {
         font-size: 0.65rem;
         width: 100%;
@@ -561,7 +783,6 @@ body {
         margin-bottom: 0.15rem;
     }
 
-    /* Buttons stretch evenly across the full width */
     .app-signout,
     .app-history {
         flex: 1;
@@ -658,7 +879,36 @@ body {
     }
 
     .status {
-        padding: 0.5rem 0.75rem;
+        padding: 0.5rem 0.75rem 0.5rem 0.9rem;
+    }
+
+    .board-wrapper::before,
+    .board-wrapper::after,
+    .board::before,
+    .board::after {
+        width: 16px;
+        height: 16px;
+        top: -4px;
+        left: -4px;
+    }
+
+    .board-wrapper::after {
+        top: -4px;
+        left: auto;
+        right: -4px;
+    }
+
+    .board::before {
+        top: auto;
+        bottom: -4px;
+        left: -4px;
+    }
+
+    .board::after {
+        top: auto;
+        bottom: -4px;
+        left: auto;
+        right: -4px;
     }
 }
 
@@ -708,5 +958,27 @@ body {
 
     .game-area {
         padding: 3rem 1rem;
+    }
+}
+
+/* ─── Reduced motion — respect user accessibility preferences ─── */
+
+@media (prefers-reduced-motion: reduce) {
+    .game-title,
+    .login-title {
+        animation: none;
+    }
+
+    .cell--winning {
+        animation: none;
+    }
+
+    .player-setup-start:hover:not(:disabled),
+    .login-submit:hover:not(:disabled) {
+        animation: none;
+    }
+
+    .cell-pop {
+        animation: none;
     }
 }
