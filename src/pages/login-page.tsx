@@ -93,6 +93,11 @@ export default function LoginPage({ onSuccess }: LoginPageProps) {
                             onChange={e => setPassword(e.target.value)}
                             required
                         />
+                        {mode === 'signup' && (
+                            <p className="password-hint">
+                                Min 8 characters · uppercase &amp; lowercase · number · special character
+                            </p>
+                        )}
                     </>
                 )}
 

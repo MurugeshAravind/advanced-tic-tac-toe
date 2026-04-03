@@ -171,7 +171,6 @@ body {
 
 .history-table {
     width: 100%;
-    min-width: 320px;
     border-collapse: collapse;
     font-size: 0.875rem;
 }
@@ -184,13 +183,6 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-
-/* "Won By" column — always show the full name, never cut it off */
-.history-table td:first-child {
-    white-space: normal;
-    word-break: break-word;
-    max-width: 200px;
 }
 
 .history-table th {
@@ -548,11 +540,6 @@ body {
         width: 100%;
     }
 
-    .history-table th,
-    .history-table td {
-        padding: 0.35rem 0.45rem;
-        font-size: 0.72rem;
-    }
 }
 
 /* ─── Mobile (≤ 480px) ─── */
@@ -587,9 +574,10 @@ body {
     }
 
     .history-container {
-        margin: 1rem 0.75rem;
-        padding: 1rem 0.9rem;
+        margin: 1rem 0.5rem;
+        padding: 1rem 0.75rem;
         border-radius: var(--radius-md);
+        overflow-x: visible;
     }
 
     .history-container h2 {
@@ -597,15 +585,50 @@ body {
         margin-bottom: 1rem;
     }
 
-    .history-table {
-        font-size: 0.8rem;
-        min-width: 0;
+    /* ── Card layout: each row becomes a stacked card ── */
+    .history-table thead {
+        display: none;
     }
 
-    .history-table th,
+    .history-table tbody tr {
+        display: block;
+        margin-bottom: 0.65rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+    }
+
+    .history-table tbody tr:last-child {
+        margin-bottom: 0;
+    }
+
     .history-table td {
-        padding: 0.45rem 0.55rem;
-        font-size: 0.75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: none;
+        border-bottom: 1px solid var(--border);
+        padding: 0.5rem 0.75rem;
+        white-space: normal;
+        word-break: break-word;
+        font-size: 0.82rem;
+        text-align: right;
+    }
+
+    .history-table td:last-child {
+        border-bottom: none;
+    }
+
+    .history-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        font-size: 0.68rem;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--accent-bright);
+        text-align: left;
+        flex-shrink: 0;
+        margin-right: 1rem;
     }
 
     .player-setup {

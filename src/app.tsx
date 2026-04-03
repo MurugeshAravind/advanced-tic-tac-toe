@@ -129,9 +129,9 @@ function App() {
                                     .slice(0, 2)
                                     .map(g => (
                                     <tr key={g.gameId}>
-                                        <td>{g.winner}</td>
-                                        <td>{g.boardSize}x{g.boardSize}</td>
-                                        <td>{new Date(g.playedAt).toLocaleString()}</td>
+                                        <td data-label="Won By">{g.winner === 'Draw' ? 'Draw' : g.winner.replace(/ Won$/, '')}</td>
+                                        <td data-label="Board">{g.boardSize}x{g.boardSize}</td>
+                                        <td data-label="Played At">{new Date(g.playedAt).toLocaleString()}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -161,11 +161,11 @@ function App() {
                             <tbody>
                                 {leaderboard.map((entry, i) => (
                                     <tr key={entry.userId}>
-                                        <td>#{i + 1}</td>
-                                        <td>{entry.username}</td>
-                                        <td>{entry.wins}</td>
-                                        <td>{entry.draws}</td>
-                                        <td>{entry.totalGames}</td>
+                                        <td data-label="Rank">#{i + 1}</td>
+                                        <td data-label="Player">{entry.username}</td>
+                                        <td data-label="Wins">{entry.wins}</td>
+                                        <td data-label="Draws">{entry.draws}</td>
+                                        <td data-label="Total">{entry.totalGames}</td>
                                     </tr>
                                 ))}
                             </tbody>
