@@ -47,13 +47,13 @@ export default function LoginPage({ onSuccess }: LoginPageProps) {
                 <div className="login-tabs">
                     <button
                         className={mode === 'login' ? 'active' : ''}
-                        onClick={() => { setMode('login'); setError(''); }}
+                        onClick={() => { setMode('login'); setEmail(''); setPassword(''); setError(''); }}
                     >
                         Sign In
                     </button>
                     <button
                         className={mode === 'signup' ? 'active' : ''}
-                        onClick={() => { setMode('signup'); setError(''); }}
+                        onClick={() => { setMode('signup'); setEmail(''); setPassword(''); setError(''); }}
                     >
                         Sign Up
                     </button>
