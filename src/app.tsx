@@ -93,10 +93,10 @@ function App() {
         <>
             <div className="app-header">
                 <span className="app-user" title={username}>👤 {username.split('@')[0]}</span>
-                <button className="app-history" onClick={handleToggleHistory}>
+                <button className={`app-history${activeView === 'history' ? ' active' : ''}`} onClick={handleToggleHistory}>
                     {activeView === 'history' ? 'Back to Game' : 'My History'}
                 </button>
-                <button className="app-history" onClick={handleToggleLeaderboard}>
+                <button className={`app-history${activeView === 'leaderboard' ? ' active' : ''}`} onClick={handleToggleLeaderboard}>
                     {activeView === 'leaderboard' ? 'Back to Game' : 'Leaderboard'}
                 </button>
                 {activeView === 'game' && playerNames && (
@@ -139,7 +139,7 @@ function App() {
                     )}
                 </div>
             ) : activeView === 'leaderboard' ? (
-                <div className="history-container">
+                <div className="history-container leaderboard">
                     <h2>Leaderboard</h2>
                     {leaderboardLoading ? (
                         <p>Loading...</p>
